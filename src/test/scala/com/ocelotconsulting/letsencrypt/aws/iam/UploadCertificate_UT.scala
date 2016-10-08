@@ -1,5 +1,6 @@
 package com.ocelotconsulting.letsencrypt.aws.iam
 
+import com.amazonaws.services.identitymanagement.model.NoSuchEntityException
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
@@ -20,8 +21,15 @@ object UploadCertificate_UT {
   }
 
   def main(args: Array[String]): Unit = {
-    val deleteResp = DeleteCertificate("ocelotconsulting.com")
-    val certResp = UploadCertificate("ocelotconsulting.com", s"${certFile.cert}${certFile.issuerCert}", certFile.key.privateKeyPem)
-    println(certResp)
+    try {
+      DeleteCertificate("ocelotconsulting.com")
+    } catch {
+      case e: NoSuchEntityException =>
+        println("Didn't find cert to delete, no prob.")
+    }
+    finally {
+      val certResp = UploadCertificate("ocelotconsulting.com", s"${certFile.cert}${certFile.issuerCert}", certFile.key.privateKeyPem)
+      println(certResp)
+    }
   }
 }
