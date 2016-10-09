@@ -2,7 +2,6 @@ package com.ocelotconsulting.letsencrypt
 
 import com.typesafe.config.ConfigFactory
 
-import scala.collection.JavaConverters._
 import scala.language.postfixOps
 
 /**
@@ -10,7 +9,5 @@ import scala.language.postfixOps
   */
 object LetsEncryptLambdaIAMConfig {
   val config = ConfigFactory.load()
-  val certMap: Map[String, String] = config.getObject("cert-path-to-iam").entrySet().asScala.map { entry =>
-    entry.getKey -> entry.getValue.render()
-  } toMap
+  def certMap(s3Path: String): String = config.getConfig("cert-path-to-iam").getString(s3Path)
 }

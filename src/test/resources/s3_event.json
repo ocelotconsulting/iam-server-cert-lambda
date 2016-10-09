@@ -11,12 +11,12 @@
         "object": {
           "eTag": "0123456789abcdef0123456789abcdef",
           "sequencer": "0A1B2C3D4E5F678901",
-          "key": "HappyFace.jpg",
+          "key": "letsencrypt/ocelotconsulting.com.json",
           "size": 1024
         },
         "bucket": {
           "arn": "arn:aws:s3:::mybucket",
-          "name": "sourcebucket",
+          "name": "letsencrypt-testlarry-certs",
           "ownerIdentity": {
             "principalId": "EXAMPLE"
           }

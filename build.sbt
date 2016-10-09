@@ -13,7 +13,7 @@ lazy val root = (project in file(".")).
         "com.amazonaws" % "aws-lambda-java-events" % "1.3.0",
         "com.amazonaws" % "aws-java-sdk-s3" % "1.11.41",
         "com.amazonaws" % "aws-java-sdk-iam" % "1.11.41",
-        "com.fasterxml.jackson.module"  %% "jackson-module-scala" % "2.7.8" % "test",
+        "com.fasterxml.jackson.module"  %% "jackson-module-scala" % "2.7.8",
         "com.typesafe" % "config" % "1.3.1"
       )
     }

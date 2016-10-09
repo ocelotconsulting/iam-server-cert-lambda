@@ -11,7 +11,7 @@ import scala.io.Source
   */
 object ReadFileToString {
   def apply(bucket : String, key: String): String = {
-    val s3Client: AmazonS3 = new AmazonS3Client(new ProfileCredentialsProvider())
+    val s3Client: AmazonS3 = new AmazonS3Client()
     val obj: S3Object = s3Client.getObject(new GetObjectRequest(bucket, key))
     Source.fromInputStream( obj.getObjectContent ).getLines.mkString
   }

@@ -18,3 +18,8 @@ automation of configuring SSL certificates in AWS.
         $ sbt clean assembly
 
 4. Upload JAR for JVM Lambda to AWS.
+
+## Disclaimer
+So far, AWS IAM only allows certificates to be uploaded, renamed, and deleted,
+which means that when a certificate expires, we must delete and re-upload it, which could
+break certain integrations relying on a specific certificate.

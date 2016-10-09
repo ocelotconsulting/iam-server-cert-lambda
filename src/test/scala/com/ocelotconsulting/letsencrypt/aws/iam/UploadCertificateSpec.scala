@@ -11,7 +11,7 @@ import scala.io.Source
 /**
   * Created by Larry Anderson on 10/8/16.
   */
-object UploadCertificate_UT {
+object UploadCertificateSpec {
   val mapper = new ObjectMapper() with ScalaObjectMapper
   mapper.registerModule(DefaultScalaModule).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
