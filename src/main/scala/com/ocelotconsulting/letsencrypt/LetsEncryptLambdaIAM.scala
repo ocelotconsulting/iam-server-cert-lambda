@@ -1,6 +1,6 @@
 package com.ocelotconsulting.letsencrypt
 
-import scala.collection.JavaConverters._
+import scala.collection.JavaConversions._
 import com.amazonaws.services.identitymanagement.model.{NoSuchEntityException, UploadServerCertificateResult}
 import com.amazonaws.services.s3.event.S3EventNotification
 import com.amazonaws.services.s3.event.S3EventNotification.S3Entity
@@ -38,9 +38,8 @@ class LetsEncryptLambdaIAM {
 
   private def transformResult(result: UploadServerCertificateResult) : String = s"Successfully uploaded certificate for ${result.getServerCertificateMetadata.getServerCertificateName}."
 
-  def configureIAMCert(event: S3EventNotification): java.util.List[String] = {
-    val objects = event.getRecords.asScala.map(_.getS3).toList
-    val result = transformResult(upload(objects.head, retrieveCert(objects.head)))
-    List(result) asJava
-  }
+  def configureIAMCert(event: S3EventNotification): java.util.List[String] =
+    event.getRecords.map(_.getS3).map{ s3Object =>
+      transformResult(upload(s3Object, retrieveCert(s3Object)))
+    }
 }
