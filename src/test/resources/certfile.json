@@ -1,0 +1,24 @@
+{
+  "key": {
+    "privateKeyPem": "",
+    "publicKeyPem": "",
+    "privateKeyJwk": {
+      "kty": "RSA",
+      "n": "",
+      "e": "AQAB",
+      "d": "",
+      "p": "",
+      "q": "",
+      "dp": "",
+      "dq": "",
+      "qi": ""
+    },
+    "publicKeyJwk": {
+      "kty": "RSA",
+      "n": "",
+      "e": "AQAB"
+    }
+  },
+  "cert": "",
+  "issuerCert": ""
+}

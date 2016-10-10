@@ -1,9 +1,7 @@
 package com.ocelotconsulting.letsencrypt
 
 import scala.collection.JavaConverters._
-import java.net.URLDecoder
-
-import com.amazonaws.{AmazonWebServiceResult, ResponseMetadata}
+import com.amazonaws.services.identitymanagement.model.{NoSuchEntityException, UploadServerCertificateResult}
 import com.amazonaws.services.s3.event.S3EventNotification
 import com.amazonaws.services.s3.event.S3EventNotification.S3Entity
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
@@ -23,27 +21,26 @@ class LetsEncryptLambdaIAM {
   val mapper = new ObjectMapper() with ScalaObjectMapper
   mapper.registerModule(DefaultScalaModule).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-  def upload(s3Entity: S3Entity, cert: CertificateFile): AmazonWebServiceResult[ResponseMetadata] = {
+  private def upload(s3Entity: S3Entity, cert: CertificateFile): UploadServerCertificateResult = {
     val certName = LetsEncryptLambdaIAMConfig.certMap(s"${decodeS3Key(s3Entity.getBucket.getName)}/${decodeS3Key(s3Entity.getObject.getKey)}")
     try {
       DeleteCertificate(certName)
+    } catch {
+      case e: NoSuchEntityException =>
+        println("Didn't find cert to delete, no prob.")
     }
-    finally {
-      UploadCertificate(certName, s"${cert.cert}${cert.issuerCert}", cert.key.privateKeyPem)
-    }
+    UploadCertificate(certName, s"${cert.cert}${cert.issuerCert}", cert.key.privateKeyPem)
   }
 
-  def getCertFileAsString(s3Entity: S3Entity): String = ReadFileToString(decodeS3Key(s3Entity.getBucket.getName), decodeS3Key(s3Entity.getObject.getKey))
+  protected def getCertFileAsString(s3Entity: S3Entity): String = ReadFileToString(decodeS3Key(s3Entity.getBucket.getName), decodeS3Key(s3Entity.getObject.getKey))
 
-  def retrieveCert(s3Entity: S3Entity): CertificateFile = mapper.readValue(getCertFileAsString(s3Entity), classOf[CertificateFile])
+  private def retrieveCert(s3Entity: S3Entity): CertificateFile = mapper.readValue(getCertFileAsString(s3Entity), classOf[CertificateFile])
 
-  def decodeS3Key(key: String): String = URLDecoder.decode(key.replace("+", " "), "utf-8")
+  private def transformResult(result: UploadServerCertificateResult) : String = s"Successfully uploaded certificate for ${result.getServerCertificateMetadata.getServerCertificateName}."
 
   def configureIAMCert(event: S3EventNotification): java.util.List[String] = {
-    val objects = event.getRecords.asScala.map { _.getS3 }
-    val s3Object = objects.toList
-    println(s3Object)
-    val result = upload(s3Object.head, retrieveCert(s3Object.head))
-    List(result.toString) asJava
+    val objects = event.getRecords.asScala.map(_.getS3).toList
+    val result = transformResult(upload(objects.head, retrieveCert(objects.head)))
+    List(result) asJava
   }
 }
