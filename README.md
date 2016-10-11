@@ -1,10 +1,12 @@
 # letsencrypt-iam-lambda
-An AWS Lambda function to take a received S3 event, and update a related certificate in AWS IAM.
+An AWS Lambda function to take a received SNS message based upon an S3 event from 
+[node-letsencrypt-lambda](https://github.com/ocelotconsulting/node-letsencrypt-lambda), and update a related certificate
+in AWS IAM. This project will serve as a follow-on project to 
+[node-letsencrypt-lambda](https://github.com/ocelotconsulting/node-letsencrypt-lambda), helping to
+further the automation of configuring SSL certificates in AWS.
 
-## Status
-Under development, but this project will serve as a follow-on project to
-[node-letsencrypt-lambda](https://github.com/ocelotconsulting/node-letsencrypt-lambda), helping to further the
-automation of configuring SSL certificates in AWS.
+## AWS Configuration
+This project requires a little [configuration](AWS.md) to be used in AWS.
 
 ## Execution
 1. Git-clone this repository.
