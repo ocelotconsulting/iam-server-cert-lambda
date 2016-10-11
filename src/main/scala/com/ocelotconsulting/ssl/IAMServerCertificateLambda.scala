@@ -39,12 +39,11 @@ class IAMServerCertificateLambda {
 
   private def transformResult(result: UploadServerCertificateResult) : String = s"Successfully uploaded certificate for ${result.getServerCertificateMetadata.getServerCertificateName}."
 
-  def configureIAMCert(event: SNSEvent): java.util.List[String] = {
-    event.getRecords.flatMap { record =>
-      S3EventNotification.parseJson(record.getSNS.getMessage)
-        .getRecords.map(_.getS3).map { s3Object =>
-          transformResult(upload(s3Object, retrieveCert(s3Object)))
-        }
-    }
-  }
+  private def extractS3Event(snsRecord: SNSEvent.SNSRecord): S3EventNotification = S3EventNotification.parseJson(snsRecord.getSNS.getMessage)
+
+  private def updateCert(s3Event: S3EventNotification): java.util.List[String] =
+    s3Event.getRecords.map(_.getS3).map { s3Object => transformResult(upload(s3Object, retrieveCert(s3Object)))}
+
+  // Actual lambda function
+  def configureIAMCert(event: SNSEvent): java.util.List[String] = event.getRecords.map { extractS3Event } flatMap updateCert
 }
