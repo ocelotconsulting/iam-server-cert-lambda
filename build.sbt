@@ -3,7 +3,7 @@ javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 
 lazy val root = (project in file(".")).
   settings(
-    name := "scala-letsencrypt-iam-lambda",
+    name := "letsencrypt-iam-lambda",
     version := "1.0",
     scalaVersion := "2.11.8",
     retrieveManaged := true,

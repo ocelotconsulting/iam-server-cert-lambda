@@ -1,4 +1,4 @@
-package com.ocelotconsulting.letsencrypt.aws.s3
+package com.ocelotconsulting.ssl.aws.s3
 
 import org.scalatest.{FlatSpec, Matchers}
 

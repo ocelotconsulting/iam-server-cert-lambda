@@ -1,4 +1,4 @@
-package com.ocelotconsulting.letsencrypt.aws.iam
+package com.ocelotconsulting.ssl.aws.iam
 
 import com.amazonaws.services.identitymanagement.model.{DeleteServerCertificateRequest, DeleteServerCertificateResult}
 

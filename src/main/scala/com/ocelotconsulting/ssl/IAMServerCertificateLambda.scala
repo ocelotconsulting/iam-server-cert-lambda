@@ -1,4 +1,4 @@
-package com.ocelotconsulting.letsencrypt
+package com.ocelotconsulting.ssl
 
 import scala.collection.JavaConversions._
 import com.amazonaws.services.identitymanagement.model.{NoSuchEntityException, UploadServerCertificateResult}
@@ -8,8 +8,8 @@ import com.amazonaws.services.s3.event.S3EventNotification.S3Entity
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import com.ocelotconsulting.letsencrypt.aws.iam.{DeleteCertificate, UploadCertificate}
-import com.ocelotconsulting.letsencrypt.aws.s3.ReadFileToString
+import com.ocelotconsulting.ssl.aws.iam.{DeleteCertificate, UploadCertificate}
+import com.ocelotconsulting.ssl.aws.s3.ReadFileToString
 
 import scala.language.postfixOps
 
@@ -17,13 +17,13 @@ import scala.language.postfixOps
   * Created by Larry Anderson on 10/7/16.
   */
 
-class LetsEncryptLambdaIAM {
+class IAMServerCertificateLambda {
 
   val mapper = new ObjectMapper() with ScalaObjectMapper
   mapper.registerModule(DefaultScalaModule).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
   private def upload(s3Entity: S3Entity, cert: CertificateFile): UploadServerCertificateResult = {
-    val certName = LetsEncryptLambdaIAMConfig.certMap(s"${decodeS3Key(s3Entity.getBucket.getName)}/${decodeS3Key(s3Entity.getObject.getKey)}")
+    val certName = IAMServerCertificateLambdaConfig.certMap(s"${decodeS3Key(s3Entity.getBucket.getName)}/${decodeS3Key(s3Entity.getObject.getKey)}")
     try {
       DeleteCertificate(certName)
     } catch {

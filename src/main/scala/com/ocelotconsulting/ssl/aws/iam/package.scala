@@ -1,4 +1,4 @@
-package com.ocelotconsulting.letsencrypt.aws
+package com.ocelotconsulting.ssl.aws
 
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClient
 

@@ -1,10 +1,10 @@
-package com.ocelotconsulting.letsencrypt.aws.iam
+package com.ocelotconsulting.ssl.aws.iam
 
 import com.amazonaws.services.identitymanagement.model.NoSuchEntityException
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
-import com.ocelotconsulting.letsencrypt.CertificateFile
+import com.ocelotconsulting.ssl.CertificateFile
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.io.Source

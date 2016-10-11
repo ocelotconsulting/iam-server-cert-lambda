@@ -1,4 +1,4 @@
-package com.ocelotconsulting.letsencrypt
+package com.ocelotconsulting.ssl
 
 /**
   * Created by Larry Anderson on 10/8/16.

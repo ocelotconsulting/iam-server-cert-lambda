@@ -1,4 +1,4 @@
-package com.ocelotconsulting.letsencrypt
+package com.ocelotconsulting.ssl
 
 import com.amazonaws.services.lambda.runtime.events.SNSEvent
 import com.amazonaws.services.lambda.runtime.events.SNSEvent.{SNS, SNSRecord}
@@ -17,15 +17,15 @@ import scala.io.Source
   * Created by Larry Anderson on 10/7/16.
   */
 
-class LetsEncryptLambdaIAMFromString(certFile: String) extends LetsEncryptLambdaIAM {
+class IAMServerCertificateLambdaFromString(certFile: String) extends IAMServerCertificateLambda {
   override def getCertFileAsString(s3Entity: S3Entity): String = certFile
 }
 
-class LetsEncryptLambdaIAMSpec  extends FlatSpec with Matchers {
+class IAMServerCertificateLambdaSpec  extends FlatSpec with Matchers {
   val mapper = new ObjectMapper() with ScalaObjectMapper
   mapper.registerModule(DefaultScalaModule).configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-  val mainObj = new LetsEncryptLambdaIAMFromString(Source.fromInputStream(getClass.getResourceAsStream("/fake_staged_cert.json")).getLines.mkString)
+  val mainObj = new IAMServerCertificateLambdaFromString(Source.fromInputStream(getClass.getResourceAsStream("/fake_staged_cert.json")).getLines.mkString)
 
   def produceS3Event: JsonNode =
     mapper.readValue(Source.fromInputStream( getClass.getResourceAsStream("/sns_s3_event.json") ).getLines.mkString, classOf[JsonNode])
