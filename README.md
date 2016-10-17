@@ -1,4 +1,4 @@
-# letsencrypt-iam-lambda
+# iam-server-cert-lambda
 An AWS Lambda function to take a received SNS message based upon an S3 event from 
 [node-letsencrypt-lambda](https://github.com/ocelotconsulting/node-letsencrypt-lambda), and update a related certificate
 in AWS IAM. This project will serve as a follow-on project to 
