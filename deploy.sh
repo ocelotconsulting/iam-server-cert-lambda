@@ -29,6 +29,7 @@ echo $app_conf > ./src/main/resources/application.conf
 sbt clean assembly
 echo $cf_template > cf_template.json
 echo $cf_parameters | sed "s|dist.zip|${LAMBCI_REPO}/${dist_file}|g" > cf_parameters.json
-npm install -g aws-sdk-cli
-aws-sdk-cli cp target/scala-2.11/scala-letsencrypt-iam-lambda-assembly-1.0.jar s3://lambci-build-artifacts/$LAMBCI_REPO/$dist_file
-aws-sdk-cli update-stack -t cf_template.json -p cf_parameters.json letsencrypt-iam-stack
+npm install aws-sdk-cli
+AWS_CLI=./node_modules/aws-sdk-cli/lib/index.js
+node $AWS_CLI cp target/scala-2.11/scala-letsencrypt-iam-lambda-assembly-1.0.jar s3://lambci-build-artifacts/$LAMBCI_REPO/$dist_file
+node $AWS_CLI update-stack -t cf_template.json -p cf_parameters.json letsencrypt-iam-stack
